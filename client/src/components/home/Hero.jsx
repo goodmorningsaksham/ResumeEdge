@@ -26,7 +26,7 @@ const Hero = () => {
 
             <div className="flex gap-2">
                 <Link to='/app?state=register' className="hidden md:block px-6 py-2 bg-[#2E073F] hover:bg-[#1A1A1D] active:scale-95 transition-all rounded-full text-white" hidden={user}>
-                    Get started
+                    Let's Do It!
                 </Link>
                 <Link to='/app?state=login' className="hidden md:block px-6 py-2 border active:scale-95 hover:bg-slate-50 transition-all rounded-full text-slate-700 hover:text-slate-900" hidden={user}>
                     Login

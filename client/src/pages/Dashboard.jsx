@@ -112,7 +112,7 @@ const Dashboard = () => {
 
       <hr className='border-slate-300 my-6 sm:w-[305px]' />
 
-      <h2 className='text-xl font-semibold mb-4 text-slate-700'>Uploaded Resumes</h2>
+      <h2 className='text-2xl font-semibold mb-4 text-slate-700'>Uploaded Resumes</h2>
 
       <div className="grid grid-cols-2 sm:flex flex-wrap gap-4 ">
         {allResumes.map((resume, index)=>{
@@ -137,7 +137,7 @@ const Dashboard = () => {
                 <button 
                   onClick={()=>navigate(`/app/analyzer/${resume._id}`)} 
                   title="Analyze Resume" 
-                  className="flex items-center gap-1 px-2 py-1 hover:bg-white/50 rounded text-slate-700 transition-colors text-xs font-medium"
+                  className="flex items-center gap-2 px-2 py-1 hover:bg-white/50 rounded text-slate-700 transition-colors text-xs font-medium"
                   style={{ color: baseColor }}
                 >
                   <Sparkles className="size-3.5" />

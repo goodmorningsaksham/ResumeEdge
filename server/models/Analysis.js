@@ -24,7 +24,7 @@ const AnalysisSchema = new mongoose.Schema({
         {
             title: String,
             description: String,
-            severity: { type: String, enum: ['critical', 'high', 'medium', 'low', 'warning', 'info'], default: 'medium' },
+            severity: { type: String, enum: ['critical', 'warning', 'info'], default: 'info' },
             suggestion: String
         }
     ],

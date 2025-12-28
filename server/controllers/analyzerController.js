@@ -54,14 +54,6 @@ const resumeToText = (resume) => {
     return text;
 };
 
-// Normalize severity values from Gemini response
-const normalizeSeverity = (severity) => {
-    if (!severity) return 'medium';
-    const normalized = severity.toLowerCase().trim();
-    const validValues = ['critical', 'high', 'medium', 'low', 'warning', 'info'];
-    return validValues.includes(normalized) ? normalized : 'medium';
-};
-
 // Parse gemini response and extract structured data
 const parseAnalysisResponse = (responseText) => {
     try {
@@ -220,12 +212,6 @@ IMPORTANT: Return ONLY valid JSON, nothing else. No explanations, no markdown, j
             suggestions: analysisData.suggestions?.length || 0
         });
 
-        // Normalize severity values in issues
-        const normalizedIssues = (analysisData.issues || []).map(issue => ({
-            ...issue,
-            severity: normalizeSeverity(issue.severity)
-        }));
-
         // Create analysis record
         const analysis = new Analysis({
             userId,
@@ -236,7 +222,7 @@ IMPORTANT: Return ONLY valid JSON, nothing else. No explanations, no markdown, j
             contentScore: analysisData.contentScore || 0,
             formatScore: analysisData.formatScore || 0,
             strengths: analysisData.strengths || [],
-            issues: normalizedIssues,
+            issues: analysisData.issues || [],
             suggestions: analysisData.suggestions || [],
             keywordAnalysis: analysisData.keywordAnalysis || {},
             sections: analysisData.sections || {},

@@ -7,23 +7,27 @@ const Testimonial = () => {
     const cardsData = [
         {
             image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200',
-            name: 'Briar Martin',
-            handle: '@neilstellar',
+            name: 'Shreesh Pandey',
+            handle: '@spandey',
+            message: 'This platform made creating a professional, ATS-ready resume fast and effortless.'
         },
         {
             image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200',
-            name: 'Avery Johnson',
-            handle: '@averywrites',
+            name: 'Ayaan Niaz',
+            handle: '@ayaan21',
+            message: 'The AI insights helped me understand exactly what recruiters are looking for.'
         },
         {
             image: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&auto=format&fit=crop&q=60',
-            name: 'Jordan Lee',
-            handle: '@jordantalks',
+            name: 'Ayush Raj',
+            handle: '@rajAyush4',
+            message: 'Simple, smart, and incredibly effective for improving resume quality.'
         },
         {
             image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&auto=format&fit=crop&q=60',
-            name: 'Avery Johnson',
-            handle: '@averywrites',
+            name: 'Jashan Singh',
+            handle: '@jasnevermisses',
+            message: 'A must-have tool for anyone serious about landing interviews.'
         },
     ];
 
@@ -41,7 +45,7 @@ const Testimonial = () => {
                     <span className="text-xs text-slate-500">{card.handle}</span>
                 </div>
             </div>
-            <p className="text-sm py-4 text-gray-800">Radiant made undercutting all of our competitors an absolute breeze.</p>
+            <p className="text-sm py-4 text-gray-800">{card.message}</p>
         </div>
     );
 
@@ -49,8 +53,8 @@ const Testimonial = () => {
   return (
     <>
     <div id='testimonials' className='flex flex-col items-center my-10 scroll-mt-12'>
-    <div className="flex items-center gap-2 text-sm text-green-600 bg-green-400/10 rounded-full px-6 py-1.5">
-        <BookUserIcon className="size-4.5 stroke-green-600"/>
+    <div className="flex items-center gap-2 text-sm text-white bg-[#2E073F] rounded-full px-6 py-1.5">
+        <BookUserIcon className="size-4.5 stroke-white"/>
         <span>Testimonials</span>
     </div>
     <Title title="Don't just take our words" description="Hear what our users say about us. We're always looking for ways to improve. If you have a positive experience with us, leave a review."/>

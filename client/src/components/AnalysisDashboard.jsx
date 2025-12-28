@@ -154,7 +154,7 @@ const AnalysisDashboard = ({ analysis }) => {
 
             {/* Strengths */}
             {analysis.strengths && analysis.strengths.length > 0 && (
-                <div className="bg-white rounded-lg p-6 shadow-md border border-green-200 border-l-4">
+                <div className="bg-white rounded-lg p-6 shadow-md border border-green-300 border-l-4">
                     <h2 className="text-xl font-bold text-green-700 mb-6 flex items-center gap-2">
                         <CheckCircle className="w-6 h-6" />
                         Strengths
@@ -163,14 +163,14 @@ const AnalysisDashboard = ({ analysis }) => {
                         {analysis.strengths.map((strength, idx) => (
                             <div key={idx} className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
                                 <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-semibold text-green-900">{strength.title}</h3>
+                                    <h3 className="font-semibold text-green-800">{strength.title}</h3>
                                     {strength.score && (
                                         <span className={`text-sm font-bold ${getScoreColor(strength.score)}`}>
                                             {strength.score}%
                                         </span>
                                     )}
                                 </div>
-                                <p className="text-sm text-green-800">{strength.description}</p>
+                                <p className="text-sm text-green-900">{strength.description}</p>
                             </div>
                         ))}
                     </div>

@@ -2,6 +2,32 @@ import Resume from "../models/Resume.js";
 import Analysis from "../models/Analysis.js";
 import ai from "../configs/ai.js";
 
+// Normalize severity values to valid enum values
+const normalizeSeverity = (severity) => {
+    const severityMap = {
+        'critical': 'critical',
+        'high': 'high',
+        'medium': 'medium',
+        'low': 'low',
+        'moderate': 'medium',
+        'minor': 'low',
+        'warning': 'high',
+        'info': 'low'
+    };
+    return severityMap[severity?.toLowerCase()] || 'medium';
+};
+
+// Normalize impact values to valid enum values
+const normalizeImpact = (impact) => {
+    const impactMap = {
+        'critical': 'critical',
+        'high': 'high',
+        'medium': 'medium',
+        'low': 'low'
+    };
+    return impactMap[impact?.toLowerCase()] || 'medium';
+};
+
 // Helper function to convert resume object to text
 const resumeToText = (resume) => {
     let text = '';
@@ -70,27 +96,50 @@ const parseAnalysisResponse = (responseText) => {
         if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
             let jsonStr = cleanedText.substring(firstBrace, lastBrace + 1);
             
-            // Try to parse the JSON
-            const parsed = JSON.parse(jsonStr);
-            
-            // Validate it has required fields
-            if (parsed.overallScore !== undefined && parsed.atsScore !== undefined) {
-                return parsed;
+            try {
+                // Try to parse the JSON
+                const parsed = JSON.parse(jsonStr);
+                
+                // Validate it has required fields
+                if (parsed.overallScore !== undefined && parsed.atsScore !== undefined) {
+                    return parsed;
+                }
+            } catch (parseError) {
+                // If JSON is incomplete, try to fix it by adding missing closing braces
+                console.log('⚠️ JSON parsing failed, attempting repair...');
+                
+                // Count opening and closing braces
+                const openBraces = (jsonStr.match(/{/g) || []).length;
+                const closeBraces = (jsonStr.match(/}/g) || []).length;
+                const missingBraces = openBraces - closeBraces;
+                
+                if (missingBraces > 0) {
+                    console.log(`⚠️ Missing ${missingBraces} closing braces, attempting repair...`);
+                    jsonStr += '}' + '}'. repeat(Math.max(0, missingBraces - 1));
+                    
+                    try {
+                        const parsed = JSON.parse(jsonStr);
+                        if (parsed.overallScore !== undefined && parsed.atsScore !== undefined) {
+                            console.log('✅ Successfully repaired and parsed JSON');
+                            return parsed;
+                        }
+                    } catch (repairError) {
+                        console.log('❌ Repair attempt failed:', repairError.message);
+                    }
+                }
+                throw parseError;
             }
         }
         
         // If no valid JSON found in response, log for debugging
         console.log('❌ Failed to extract valid JSON');
         console.log('Response length:', responseText.length);
-        console.log('Response preview:', responseText.substring(0, 300));
+        console.log('Response preview:', responseText.substring(0, 500));
         return null;
     } catch (error) {
         console.log('❌ JSON Parse Error:', error.message);
         console.log('Response length:', responseText.length);
-        // Check if response is truncated
-        if (responseText.length > 2900) {
-            console.log('⚠️ Response might be truncated - increase max_tokens');
-        }
+        console.log('Full response:', responseText.substring(0, 1000) + '...');
         return null;
     }
 };
@@ -190,7 +239,7 @@ IMPORTANT: Return ONLY valid JSON, nothing else. No explanations, no markdown, j
                 }
             ],
             temperature: 0.5,
-            max_tokens: 4500
+            max_tokens: 8000
         });
 
         const analysisText = response.choices[0].message.content;
@@ -212,6 +261,17 @@ IMPORTANT: Return ONLY valid JSON, nothing else. No explanations, no markdown, j
             suggestions: analysisData.suggestions?.length || 0
         });
 
+        // Normalize severity and impact values
+        const normalizedIssues = (analysisData.issues || []).map(issue => ({
+            ...issue,
+            severity: normalizeSeverity(issue.severity)
+        }));
+        
+        const normalizedSuggestions = (analysisData.suggestions || []).map(suggestion => ({
+            ...suggestion,
+            impact: normalizeImpact(suggestion.impact)
+        }));
+
         // Create analysis record
         const analysis = new Analysis({
             userId,
@@ -222,8 +282,8 @@ IMPORTANT: Return ONLY valid JSON, nothing else. No explanations, no markdown, j
             contentScore: analysisData.contentScore || 0,
             formatScore: analysisData.formatScore || 0,
             strengths: analysisData.strengths || [],
-            issues: analysisData.issues || [],
-            suggestions: analysisData.suggestions || [],
+            issues: normalizedIssues,
+            suggestions: normalizedSuggestions,
             keywordAnalysis: analysisData.keywordAnalysis || {},
             sections: analysisData.sections || {},
             formatting: analysisData.formatting || {},

@@ -18,7 +18,7 @@ const Hero = () => {
             </a>
 
             <div className="hidden md:flex items-center gap-8 transition duration-500 text-slate-800">
-                <a href="#" className="hover:text-[#2E073F] transition">Homer</a>
+                <a href="#" className="hover:text-[#2E073F] transition">Home</a>
                 <a href="#features" className="hover:text-[#2E073F] transition">Features</a>
                 <a href="#testimonials" className="hover:text-[#2E073F] transition">Testimonials</a>
                 <a href="#cta" className="hover:text-[#2E073F] transition">Contact</a>

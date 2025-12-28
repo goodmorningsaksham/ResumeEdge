@@ -1,52 +1,29 @@
 version: "3.8"
-
 services:
   web:
-    depends_on:
-      - api
     build: ./client
     ports:
-      - 5173:5173
+      - "5173:5173"
     environment:
-      VITE_API_URL: http://localhost:3000
-    
-    develop:
-      watch:
-        - path: ./client/package.json
-          action: rebuild
-        - path: ./client/package-lock.json
-          action: rebuild
+      - VITE_API_URL=${VITE_API_URL}
+    restart: always
 
-        - path: ./client
-          target: /app
-          action: sync
-  
   api:
-    depends_on:
-      - db
     build: ./server
     ports:
-      - 3000:3000
-    environment:
-      DB_URL: mongodb://db:27017/resume_db 
-    
-    develop:
-      watch:
-        - path: ./server/package.json
-          action: rebuild
-        - path: ./server/package-lock.json
-          action: rebuild
-        
-        - path: ./server
-          target: /app
-          action: sync
-  
+      - "3000:3000"
+    env_file: .env
+    depends_on:
+      - db
+    restart: always
+
   db:
     image: mongo:latest
     ports:
-      - 27017:27017
+      - "27017:27017"
     volumes:
-      - resume:/data/db 
+      - resume_data:/data/db
+    restart: always
 
 volumes:
-  resume:
+  resume_data:

@@ -74,35 +74,17 @@ export const getPublicResumeById = async (req, res) => {
 // PUT: /api/resumes/update
 export const updateResume = async (req, res) => {
     try {
-        const userId = req.userId;
         const { resumeId, resumeData } = req.body;
         
-        // When using multer-s3, the file info is here:
-        const imageFile = req.file; 
+        // We no longer check for req.file here
         
-        let resumeDataCopy;
-        if (typeof resumeData === 'string') {
-            resumeDataCopy = JSON.parse(resumeData);
-        } else {
-            resumeDataCopy = structuredClone(resumeData);
-        }
-
-        // If a new image was uploaded to S3
-        if (imageFile) {
-            // imageFile.location is the URL provided by AWS S3
-            resumeDataCopy.personal_info.image = imageFile.location;
-        }
-
         const resume = await Resume.findOneAndUpdate(
-            { userId, _id: resumeId }, 
-            resumeDataCopy, 
+            { _id: resumeId }, 
+            resumeData, 
             { new: true }
         );
 
-        if (!resume) {
-            return res.status(404).json({ message: "Resume not found or unauthorized" });
-        }
-
+        if (!resume) return res.status(404).json({ message: "Resume not found" });
         return res.status(200).json({ message: 'Saved successfully', resume });
     } catch (error) {
         return res.status(400).json({ message: error.message });

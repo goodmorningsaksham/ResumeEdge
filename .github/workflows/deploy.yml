@@ -19,18 +19,11 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ubuntu/ResumeEdge
-            
-            # 1. Update code
             git pull origin main
-            
-            # 2. Recreate .env file from GitHub Secrets
             echo "${{ secrets.ENV_FILE }}" > .env
             
-            # 3. Clean up and Rebuild
-            # We use build without --no-cache to save time on EC2
-            docker compose down
-            docker compose build
-            docker compose up -d
+            # The '--build' flag is the secret to seeing your changes!
+            docker compose up -d --build
             
-            # 4. Final Prune to save disk space
+            # This cleans up old, unused versions to save space
             docker system prune -f

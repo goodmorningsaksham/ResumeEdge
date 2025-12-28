@@ -19,11 +19,16 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ubuntu/ResumeEdge
-            git pull origin main
+            # 1. Force the server to reset to the latest code from GitHub
+            git fetch --all
+            git reset --hard origin/${{ github.ref_name }}
+            
+            # 2. Re-create the environment file
             echo "${{ secrets.ENV_FILE }}" > .env
             
-            # The '--build' flag is the secret to seeing your changes!
+            # 3. Force a complete rebuild
+            docker compose down
             docker compose up -d --build
             
-            # This cleans up old, unused versions to save space
+            # 4. Cleanup
             docker system prune -f

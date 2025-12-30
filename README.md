@@ -13,7 +13,7 @@ This section provides **visual proof of deployment, automation, and system archi
 ## 🌐 Live Application Walkthrough
 
 🎥 **Live Resume Builder & Dashboard Demo**  
-🔗 [Watch Live Application Demo](https://github.com/user-attachments/assets/1f76486b-402e-4dc7-9f99-cece161c921e)
+🔗 [Watch Live Application Demo](https://github.com/user-attachments/assets/638a4342-ec7e-421d-9ee5-ee2d8646d9a0)
 
 <p align="center">
   <img src="assets/screenshots/User Flow Journey.png" width="850"/>
@@ -24,7 +24,7 @@ This section provides **visual proof of deployment, automation, and system archi
 ## 🔁 Automated CI/CD Pipeline (GitHub Actions → AWS EC2)
 
 🎥 **CI/CD Deployment Video**  
-🔗 [Watch CI/CD Pipeline Demo](https://github.com/user-attachments/assets/638a4342-ec7e-421d-9ee5-ee2d8646d9a0)
+🔗 [Watch CI/CD Pipeline Demo](https://github.com/user-attachments/assets/1f76486b-402e-4dc7-9f99-cece161c921e)
 
 <p align="center">
   <img src="assets/screenshots/CI-CD workflow Github.png" width="850"/>
